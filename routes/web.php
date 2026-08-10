@@ -3,13 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
-use Inovector\Mixpost\Http\Controllers\AccountEntitiesController;
 use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
 use Inovector\Mixpost\Http\Controllers\AuthenticatedController;
 use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
-use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
 use Inovector\Mixpost\Http\Controllers\DeletePostsController;
 use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
@@ -66,7 +64,6 @@ Route::middleware([
             Route::delete('{post}', [PostsController::class, 'destroy'])->name('delete');
 
             Route::post('schedule/{post}', SchedulePostController::class)->name('schedule');
-            Route::post('duplicate/{post}', DuplicatePostController::class)->name('duplicate');
             Route::delete('/', DeletePostsController::class)->name('multipleDelete');
         });
 
@@ -99,8 +96,6 @@ Route::middleware([
         Route::prefix('services')->name('services.')->group(function () {
             Route::get('/', [ServicesController::class, 'index'])->name('index');
             Route::put('{service}', [ServicesController::class, 'update'])->name('update');
-
-            Route::post('create-mastodon-app', CreateMastodonAppController::class)->name('createMastodonApp');
         });
 
         Route::prefix('profile')->name('profile.')->group(function () {

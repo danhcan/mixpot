@@ -1,9 +1,7 @@
 <script setup>
 import {computed} from "vue";
 import usePostVersions from "@/Composables/usePostVersions";
-import PostPreviewTwitter from "@/Components/PostPreview/PostPreviewTwitter.vue"
 import PostPreviewFacebook from "@/Components/PostPreview/PostPreviewFacebook.vue"
-import PostPreviewMastodon from "@/Components/PostPreview/PostPreviewMastodon.vue"
 import Panel from "@/Components/Surface/Panel.vue";
 import Alert from "@/Components/Util/Alert.vue";
 import ProviderIcon from "../Account/ProviderIcon.vue";
@@ -34,10 +32,8 @@ const previews = computed(() => {
             account,
             content: accountVersion ? accountVersion.content : defaultVersion.value.content,
             providerComponent: {
-                'twitter': PostPreviewTwitter,
                 'facebook_page': PostPreviewFacebook,
                 'facebook_group': PostPreviewFacebook,
-                'mastodon': PostPreviewMastodon
             }[account.provider]
         }
     });

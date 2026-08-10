@@ -5,16 +5,11 @@ namespace Inovector\Mixpost;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
-use Inovector\Mixpost\Commands\ClearServicesCache;
 use Inovector\Mixpost\Commands\ClearSettingsCache;
-use Inovector\Mixpost\Commands\CreateMastodonApp;
+use Inovector\Mixpost\Commands\ClearServicesCache;
 use Inovector\Mixpost\Commands\DeleteOldData;
-use Inovector\Mixpost\Commands\ImportAccountAudience;
-use Inovector\Mixpost\Commands\ImportAccountData;
-use Inovector\Mixpost\Commands\ProcessMetrics;
 use Inovector\Mixpost\Commands\PruneTemporaryDirectory;
 use Inovector\Mixpost\Commands\PublishAssetsCommand;
-use Inovector\Mixpost\Commands\RunScheduledPosts;
 use Inovector\Mixpost\Events\AccountAdded;
 use Inovector\Mixpost\Events\AccountUnauthorized;
 use Inovector\Mixpost\Exceptions\MixpostExceptionHandler;
@@ -43,13 +38,8 @@ class MixpostServiceProvider extends PackageServiceProvider
             ])
             ->hasCommands([
                 PublishAssetsCommand::class,
-                CreateMastodonApp::class,
                 ClearSettingsCache::class,
                 ClearServicesCache::class,
-                RunScheduledPosts::class,
-                ImportAccountAudience::class,
-                ImportAccountData::class,
-                ProcessMetrics::class,
                 DeleteOldData::class,
                 PruneTemporaryDirectory::class,
             ])->hasInstallCommand(function (InstallCommand $command) {

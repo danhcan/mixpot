@@ -78,7 +78,7 @@ class PostsController extends Controller
     {
         $post = $storePost->handle();
 
-        return redirect()->route('mixpost.posts.edit', ['post' => $post->uuid]);
+        return redirect()->route('mixpost.posts.index');
     }
 
     public function edit(Request $request): Response

@@ -2,13 +2,12 @@
 
 namespace Inovector\Mixpost\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 use Inovector\Mixpost\Events\AccountUnauthorized as AccountUnauthorizedEvent;
 use Inovector\Mixpost\Facades\Settings;
 use Inovector\Mixpost\Mail\AccountUnauthorizedMail;
 
-class SendAccountUnauthorizedNotification implements ShouldQueue
+class SendAccountUnauthorizedNotification
 {
     public function handle(AccountUnauthorizedEvent $event): void
     {

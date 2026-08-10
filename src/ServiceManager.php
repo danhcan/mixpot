@@ -13,7 +13,6 @@ use Inovector\Mixpost\Exceptions\ServiceNotRegistered;
 use Inovector\Mixpost\Models\Service as ServiceModel;
 use Inovector\Mixpost\Services\FacebookService;
 use Inovector\Mixpost\Services\TenorService;
-use Inovector\Mixpost\Services\TwitterService;
 use Inovector\Mixpost\Services\UnsplashService;
 use Inovector\Mixpost\Support\Log;
 
@@ -32,7 +31,6 @@ class ServiceManager
     {
         return [
             FacebookService::class,
-            TwitterService::class,
             UnsplashService::class,
             TenorService::class,
         ];
@@ -141,13 +139,9 @@ class ServiceManager
 
     public function get(string $name, ?string $key = null)
     {
-        // Mastodon service is not exists. Each Mastodon server has its own configuration.
-        // Mastodon configuration is stored during connection process.
-        $isMastodon = Str::startsWith($name, 'mastodon.');
-
         $defaultPayload = [
-            'configuration' => $isMastodon ? [] : $this->getServiceClass($name)::form(),
-            'active' => $isMastodon,
+            'configuration' => $this->getServiceClass($name)::form(),
+            'active' => false,
         ];
 
         $value = $this->getFromCache($name, function () use ($name, $defaultPayload) {

@@ -53,8 +53,6 @@ const form = useForm({
     accounts: post ? post.accounts.map(account => account.id) : [],
     versions: post ? post.versions : [versionObject(0, true, props.prefill.body)],
     tags: post ? post.tags : [],
-    date: post ? post.scheduled_at.date : props.schedule_at.date,
-    time: post ? post.scheduled_at.time : props.schedule_at.time,
 });
 
 const postAccounts = computed(() => {
@@ -121,9 +119,7 @@ const save = () => {
                 })
             }
         }),
-        tags: form.tags.map(tag => tag.id),
-        date: form.date,
-        time: form.time
+        tags: form.tags.map(tag => tag.id)
     }
 
     if (!props.post) {

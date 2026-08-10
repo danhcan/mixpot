@@ -1,7 +1,5 @@
 import {computed} from "vue";
 import CountTextCharacters from "../Util/CountTextCharacters";
-import Mastodon from "../SocialProviders/Mastodon";
-import Twitter from "twitter-text";
 import {minBy, maxBy} from "lodash";
 import useEditor from "@/Composables/useEditor";
 import usePostVersions from "@/Composables/usePostVersions";
@@ -24,7 +22,7 @@ export default function usePostCharacterLimit(props) {
 
         const accounts = version === 0 ? accountsWithoutVersion.value : props.selectedAccounts.filter(account => account.id === version);
 
-        const accountsLimit = accounts.map(account => {
+        const accountsLimit = accounts.map((account) => {
             return {
                 account_id: account.id,
                 provider: {
@@ -42,14 +40,7 @@ export default function usePostCharacterLimit(props) {
     const getCharMinLimit = (version) => getCharLimit(version, 'min', maxBy) || null;
 
     const getTextLength = (providerId, text) => {
-        switch (providerId) {
-            case 'mastodon':
-                return Mastodon.getPostLength(text);
-            case 'twitter':
-                return Twitter.getTweetLength(text);
-            default:
-                return CountTextCharacters.getLength(text);
-        }
+        return CountTextCharacters.getLength(text);
     };
 
     const calculateCharLeft = (limit, used) => limit - used;

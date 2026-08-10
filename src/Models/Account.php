@@ -10,7 +10,6 @@ use Inovector\Mixpost\Casts\EncryptArrayObject;
 use Inovector\Mixpost\Concerns\Model\HasUuid;
 use Inovector\Mixpost\Events\AccountUnauthorized;
 use Inovector\Mixpost\Facades\SocialProviderManager;
-use Inovector\Mixpost\SocialProviders\Mastodon\MastodonProvider;
 use Inovector\Mixpost\Support\SocialProviderPostConfigs;
 
 class Account extends Model
@@ -111,10 +110,6 @@ class Account extends Model
     {
         if (! $this->getProviderClass()) {
             return false;
-        }
-
-        if ($this->getProviderClass() === MastodonProvider::class) {
-            return true;
         }
 
         return $this->getProviderClass()::service()::isActive();

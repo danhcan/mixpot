@@ -82,41 +82,11 @@ return [
      * You only change them when the API policy of the social networks changes, and you know what you are doing.
      */
     'social_provider_options' => [
-        'twitter' => [
-            'simultaneous_posting_on_multiple_accounts' => false,
-            'post_character_limit' => 280,
-            'media_limit' => [
-                'photos' => 4,
-                'videos' => 1,
-                'gifs' => 1,
-                'allow_mixing' => false,
-            ],
-        ],
         'facebook_page' => [
             'simultaneous_posting_on_multiple_accounts' => true,
             'post_character_limit' => 5000,
             'media_limit' => [
                 'photos' => 10,
-                'videos' => 1,
-                'gifs' => 1,
-                'allow_mixing' => false,
-            ],
-        ],
-        'facebook_group' => [
-            'simultaneous_posting_on_multiple_accounts' => true,
-            'post_character_limit' => 5000,
-            'media_limit' => [
-                'photos' => 10,
-                'videos' => 1,
-                'gifs' => 1,
-                'allow_mixing' => false,
-            ],
-        ],
-        'mastodon' => [
-            'simultaneous_posting_on_multiple_accounts' => true,
-            'post_character_limit' => 500,
-            'media_limit' => [
-                'photos' => 4,
                 'videos' => 1,
                 'gifs' => 1,
                 'allow_mixing' => false,

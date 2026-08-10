@@ -7,8 +7,6 @@ use Illuminate\Validation\Rule;
 use Inovector\Mixpost\Contracts\ProviderReports;
 use Inovector\Mixpost\Models\Account;
 use Inovector\Mixpost\Reports\FacebookPageReports;
-use Inovector\Mixpost\Reports\MastodonReports;
-use Inovector\Mixpost\Reports\TwitterReports;
 
 class Reports extends FormRequest
 {
@@ -25,10 +23,8 @@ class Reports extends FormRequest
         $account = Account::find($this->get('account_id'));
 
         $providerReports = match ($account->provider) {
-            'twitter' => TwitterReports::class,
             'facebook_page' => FacebookPageReports::class,
-            'mastodon' => MastodonReports::class,
-            default => null
+            default => null,
         };
 
         if (! $providerReports) {

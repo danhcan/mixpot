@@ -8,11 +8,6 @@ import ProviderIcon from "@/Components/Account/ProviderIcon.vue";
 import UnsplashIcon from "@/Icons/Unsplash.vue";
 import TenorIcon from "@/Icons/Tenor.vue";
 
-const TwitterServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/TwitterServiceForm.vue"));
-const FacebookServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/FacebookServiceForm.vue"));
-const UnsplashServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/UnsplashServiceForm.vue"));
-const TenorServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/TenorServiceForm.vue"));
-
 const pageTitle = 'Third Party Services';
 
 const props = defineProps(['services'])
@@ -41,13 +36,6 @@ const tab = ref('facebook');
                     Facebook
                 </Tab>
 
-                <Tab @click="tab = 'twitter'" :active="tab === 'twitter'">
-                    <template #icon>
-                        <ProviderIcon provider="twitter"/>
-                    </template>
-                    X
-                </Tab>
-
                 <Tab @click="tab = 'unsplash'" :active="tab === 'unsplash'">
                     <template #icon>
                         <UnsplashIcon class="text-black"/>
@@ -67,10 +55,6 @@ const tab = ref('facebook');
         <div class="row-px">
             <template v-if="tab === 'facebook'">
                 <FacebookServiceForm :form="form.facebook"/>
-            </template>
-
-            <template v-if="tab === 'twitter'">
-                <TwitterServiceForm :form="form.twitter"/>
             </template>
 
             <template v-if="tab === 'unsplash'">

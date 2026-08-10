@@ -9,10 +9,7 @@ import Account from "@/Components/Account/Account.vue"
 import PrimaryButton from "../Components/Button/PrimaryButton.vue";
 import Tabs from "@/Components/Navigation/Tabs.vue"
 import Tab from "@/Components/Navigation/Tab.vue"
-import TwitterReports from "@/Components/Report/TwitterReports.vue"
 import FacebookPageReports from "@/Components/Report/FacebookPageReports.vue"
-import FacebookGroupReports from "@/Components/Report/FacebookGroupReports.vue"
-import MastodonReports from "@/Components/Report/MastodonReports.vue"
 
 const props = defineProps({
     accounts: {
@@ -63,10 +60,7 @@ const fetch = () => {
 }
 
 const providers = {
-    'twitter': TwitterReports,
     'facebook_page': FacebookPageReports,
-    'facebook_group': FacebookGroupReports,
-    'mastodon': MastodonReports,
 };
 
 const component = computed(() => {

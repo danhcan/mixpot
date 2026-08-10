@@ -61,7 +61,6 @@ class HandleInertiaRequests extends Middleware
             },
             'app' => [
                 'name' => Config::get('app.name'),
-                'horizon_path' => Config::get('horizon.path'),
             ],
             'mixpost' => [
                 'docs_link' => 'https://docs.mixpost.app',

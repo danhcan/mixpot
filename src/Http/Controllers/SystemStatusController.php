@@ -2,17 +2,12 @@
 
 namespace Inovector\Mixpost\Http\Controllers;
 
-use Composer\InstalledVersions;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
-use Inovector\Mixpost\Support\HorizonStatus;
 use Inovector\Mixpost\Util;
 
 class SystemStatusController extends Controller
@@ -21,11 +16,9 @@ class SystemStatusController extends Controller
     {
         return Inertia::render('System/Status', [
             'health' => [
-                'env' => App::environment(),
+                'env' => app()->environment(),
                 'debug' => Config::get('app.debug'),
-                'horizon_status' => resolve(HorizonStatus::class)->get(),
-                'has_queue_connection' => Config::get('queue.connections.mixpost-redis') && ! empty(Config::get('queue.connections.mixpost-redis')),
-                'last_scheduled_run' => $this->getLastScheduleRun(),
+                'last_scheduled_run' => [],
             ],
             'tech' => [
                 'cache_driver' => Config::get('cache.default'),
@@ -36,39 +29,12 @@ class SystemStatusController extends Controller
                 'ffmpeg_status' => Util::isFFmpegInstalled() ? 'Installed' : 'Not Installed',
                 'versions' => [
                     'php' => PHP_VERSION,
-                    'laravel' => App::version(),
-                    'horizon' => InstalledVersions::getVersion('laravel/horizon'),
+                    'laravel' => app()->version(),
                     'mysql' => $this->mysqlVersion(),
-                    'mixpost' => InstalledVersions::getVersion('inovector/mixpost'),
+                    'mixpost' => \Composer\InstalledVersions::getVersion('inovector/mixpost'),
                 ],
             ],
         ]);
-    }
-
-    protected function getLastScheduleRun(): array
-    {
-        $lastScheduleRun = Cache::get('mixpost-last-schedule-run');
-
-        if (! $lastScheduleRun) {
-            return [
-                'variant' => 'error',
-                'message' => 'It never started',
-            ];
-        }
-
-        $diff = (int) abs(Carbon::now('UTC')->diffInMinutes($lastScheduleRun));
-
-        if ($diff < 10) {
-            return [
-                'variant' => 'success',
-                'message' => "Ran $diff minute(s) ago",
-            ];
-        }
-
-        return [
-            'variant' => 'warning',
-            'message' => "Ran $diff minute(s) ago",
-        ];
     }
 
     protected function mysqlVersion(): string

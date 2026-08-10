@@ -4,11 +4,7 @@ namespace Inovector\Mixpost\SocialProviders\Meta\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
@@ -21,9 +17,9 @@ use Inovector\Mixpost\Models\FacebookInsight;
 use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
 use Inovector\Mixpost\Support\SocialProviderResponse;
 
-class ImportFacebookInsightsJob implements ShouldQueue
+class ImportFacebookInsightsJob
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable;
     use HasSocialProviderJobRateLimit;
     use SocialProviderException;
     use SocialProviderJobFail;
@@ -54,11 +50,6 @@ class ImportFacebookInsightsJob implements ShouldQueue
             return;
         }
 
-        /**
-         * @see FacebookPageProvider
-         *
-         * @var SocialProviderResponse $response
-         */
         $response = $this->connectProvider($this->account)->getPageInsights();
 
         if ($response->isUnauthorized()) {

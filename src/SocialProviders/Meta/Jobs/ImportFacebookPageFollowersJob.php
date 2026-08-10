@@ -4,11 +4,7 @@ namespace Inovector\Mixpost\SocialProviders\Meta\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Inovector\Mixpost\Concerns\Job\HasSocialProviderJobRateLimit;
 use Inovector\Mixpost\Concerns\Job\SocialProviderException;
 use Inovector\Mixpost\Concerns\Job\SocialProviderJobFail;
@@ -18,9 +14,9 @@ use Inovector\Mixpost\Models\Audience;
 use Inovector\Mixpost\SocialProviders\Meta\FacebookPageProvider;
 use Inovector\Mixpost\Support\SocialProviderResponse;
 
-class ImportFacebookPageFollowersJob implements ShouldQueue
+class ImportFacebookPageFollowersJob
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable;
     use HasSocialProviderJobRateLimit;
     use SocialProviderException;
     use SocialProviderJobFail;
@@ -51,11 +47,6 @@ class ImportFacebookPageFollowersJob implements ShouldQueue
             return;
         }
 
-        /**
-         * @see FacebookPageProvider
-         *
-         * @var SocialProviderResponse $response
-         */
         $response = $this->connectProvider($this->account)->getPageAudience();
 
         if ($response->isUnauthorized()) {
@@ -77,7 +68,6 @@ class ImportFacebookPageFollowersJob implements ShouldQueue
         }
 
         if ($response->hasError()) {
-            // TODO: Create a table for logs all import, collect jobs in background
             $this->captureException($response);
 
             return;

@@ -8,9 +8,7 @@ import Panel from "@/Components/Surface/Panel.vue";
 import Modal from "@/Components/Modal/Modal.vue"
 import ConfirmationModal from "@/Components/Modal/ConfirmationModal.vue"
 import Account from "@/Components/Account/Account.vue"
-import AddTwitterAccount from "@/Components/Account/AddTwitterAccount.vue"
 import AddFacebookPage from "@/Components/Account/AddFacebookPage.vue"
-import AddMastodonAccount from "@/Components/Account/AddMastodonAccount.vue"
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue"
 import DangerButton from "@/Components/Button/DangerButton.vue"
 import Dropdown from "@/Components/Dropdown/Dropdown.vue"
@@ -165,10 +163,6 @@ const closeConfirmationAccountDeletion = () => {
         <div class="flex flex-col">
             <AddFacebookPage
                 v-if="$page.props.is_service_active.facebook"
-            />
-            <AddMastodonAccount/>
-            <AddTwitterAccount
-                v-if="$page.props.is_service_active.twitter"
             />
         </div>
     </Modal>
