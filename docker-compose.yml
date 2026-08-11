@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    volumes:
+      - storage:/app/storage
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/app/storage/database.sqlite
+      - QUEUE_CONNECTION=sync
+      - SESSION_DRIVER=file
+      - CACHE_DRIVER=file
+      - LOG_CHANNEL=stack
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  storage:

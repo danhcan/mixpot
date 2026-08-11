@@ -1,0 +1,43 @@
+FROM php:8.2-cli-alpine
+
+RUN apk add --no-cache \
+    sqlite-dev \
+    sqlite-libs \
+    bash \
+    curl \
+    git \
+    unzip \
+    zip \
+    icu-dev \
+    $PHPIZE_DEPS \
+  && docker-php-ext-install -j$(nproc) \
+    bcmath \
+    intl \
+    mbstring \
+    pdo_sqlite \
+    zip \
+    opcache \
+    sockets \
+    xml \
+  && apk del $PHPIZE_DEPS \
+  && rm -rf /tmp/pear
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+COPY . .
+
+RUN composer dump-autoload --optimize \
+  && php artisan config:cache \
+  && php artisan route:cache \
+  && php artisan view:cache \
+  && mkdir -p storage/framework/{cache,sessions,views} \
+  && mkdir -p storage/logs \
+  && mkdir -p bootstrap/cache \
+  && chmod -R 775 storage bootstrap/cache
+
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]

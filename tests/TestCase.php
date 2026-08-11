@@ -84,19 +84,31 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'mysql');
+        $isSqlite = env('DB_CONNECTION') === 'sqlite';
 
-        config()->set('database.connections.mysql', [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'mixpost_test'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'prefix' => '',
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-        ]);
+        if ($isSqlite) {
+            config()->set('database.default', 'sqlite');
+            config()->set('database.connections.sqlite', [
+                'driver' => 'sqlite',
+                'url' => env('DATABASE_URL'),
+                'database' => env('DB_DATABASE', database_path('database.sqlite')),
+                'prefix' => '',
+                'foreign_key_constraints' => true,
+            ]);
+        } else {
+            config()->set('database.default', 'mysql');
+            config()->set('database.connections.mysql', [
+                'driver' => 'mysql',
+                'host' => env('DB_HOST', '127.0.0.1'),
+                'port' => env('DB_PORT', '3306'),
+                'database' => env('DB_DATABASE', 'mixpost_test'),
+                'username' => env('DB_USERNAME', 'root'),
+                'password' => env('DB_PASSWORD', ''),
+                'prefix' => '',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ]);
+        }
 
         config()->set('mixpost.disk', 'mixpost_test');
 
