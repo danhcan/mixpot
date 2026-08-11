@@ -33,7 +33,6 @@ RUN apk add --no-cache \
     opcache \
     sockets \
     xml \
-    xmlrpc \
   && pecl install redis \
   && docker-php-ext-enable redis \
   && apk del $PHPIZE_DEPS \
