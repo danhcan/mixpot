@@ -1,0 +1,8 @@
+node_modules
+.git
+resources/dist
+storage
+vendor
+*.log
+.DS_Store
+Thumbs.db
