@@ -1,3 +1,12 @@
+FROM composer:latest AS vendor
+
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+COPY . .
+RUN composer dump-autoload --optimize
+
 FROM php:8.2-cli-alpine
 
 RUN apk add --no-cache \
@@ -19,7 +28,15 @@ RUN apk add --no-cache \
     zip \
     icu-dev \
     linux-headers \
-    $PHPIZE_DEPS \
+    autoconf \
+    dpkg-dev dpkg \
+    file \
+    g++ \
+    gcc \
+    libc-dev \
+    make \
+    pkgconf \
+    re2c \
   && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
   && docker-php-ext-install -j$(nproc) \
     bcmath \
@@ -35,23 +52,25 @@ RUN apk add --no-cache \
     xml \
   && pecl install redis \
   && docker-php-ext-enable redis \
-  && apk del $PHPIZE_DEPS \
+  && apk del autoconf \
+    dpkg-dev dpkg \
+    file \
+    g++ \
+    gcc \
+    libc-dev \
+    make \
+    pkgconf \
+    re2c \
   && rm -rf /tmp/pear
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=vendor /app/vendor /app/vendor
+COPY --from=vendor /app/composer.lock /app/composer.lock
 
 WORKDIR /app
 
-COPY composer.json ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
-
 COPY . .
 
-RUN composer dump-autoload --optimize \
-  && php artisan config:cache \
-  && php artisan route:cache \
-  && php artisan view:cache \
-  && mkdir -p storage/framework/{cache,sessions,views} \
+RUN mkdir -p storage/framework/{cache,sessions,views} \
   && mkdir -p storage/logs \
   && mkdir -p bootstrap/cache \
   && chmod -R 775 storage bootstrap/cache
